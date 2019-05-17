@@ -31,12 +31,6 @@ https://mockmoon-cybernetics.ch/computer/p-touch2430pc/
     ./configure --prefix=/usr
     make
 
-### A Note from Dominic
-
-Dear visitor, currently I have absolutely no time for improvements on this
-project (my free time currently is about one or two hours PER MONTH).
-Therefore, I can not look at suggestions about improvements.
-
 
 ### Development for PT-P700 series:
 
@@ -47,3 +41,11 @@ Therefore, I can not look at suggestions about improvements.
 - For the P700 to work with `ptouch`, one change may require the `graphics transfer mode` being set in the `ptouch_rasterstart` using the `\x1b\x69\x61\x01` instead of `\x1b\x69\x52\x01`, according to the documentation for that model.
 - [Software Developer's Manual for the PT-P700](https://support.brother.com/g/b/manuallist.aspx?c=us&lang=en&prod=p700eus&flang=English&type3=437&type2=81) ( file name as of today is cv_pth500p700e500_eng_raster_110.pdf )
 - You may wish to check out [a log of one user's experience](https://sites.google.com/site/tingox/brother_pt-p700) trying to print using both `ptouch-print` and `ptouch-770-write`
+
+
+### A Note from Dominic
+
+Dear visitor, currently I have absolutely no time for improvements on this
+project (my free time currently is about one or two hours PER MONTH).
+Therefore, I can not look at suggestions about improvements.
+
