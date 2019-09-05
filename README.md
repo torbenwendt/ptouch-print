@@ -44,9 +44,13 @@ https://mockmoon-cybernetics.ch/computer/p-touch2430pc/
 - This printer may work with [a few code changes](https://github.com/clarkewd/ptouch-print/issues/2), and perhaps will be incorporated into the source soon so that no modifications are needed
 
 
-### A Note from Dominic
+### A Note from Dominic's website
 
 Dear visitor, currently I have absolutely no time for improvements on this
 project (my free time currently is about one or two hours PER MONTH).
 Therefore, I can not look at suggestions about improvements.
+
+### Alternative Collaboration
+
+You may still, of course, contact Dominic directly if you'd like. But I think GitHub is easier for collaboration, and he has given me permission to host a clone of his repo here, passing code contributions back to him
 
