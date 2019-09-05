@@ -41,6 +41,7 @@ https://mockmoon-cybernetics.ch/computer/p-touch2430pc/
 - For the P700 to work with `ptouch`, one change may require the `graphics transfer mode` being set in the `ptouch_rasterstart` using the `\x1b\x69\x61\x01` instead of `\x1b\x69\x52\x01`, according to the documentation for that model.
 - [Software Developer's Manual for the PT-P700](https://support.brother.com/g/b/manuallist.aspx?c=us&lang=en&prod=p700eus&flang=English&type3=437&type2=81) ( file name as of today is cv_pth500p700e500_eng_raster_110.pdf )
 - You may wish to check out [a log of one user's experience](https://sites.google.com/site/tingox/brother_pt-p700) trying to print using both `ptouch-print` and `ptouch-770-write`
+- This printer may work with [a few code changes](https://github.com/clarkewd/ptouch-print/issues/2), and perhaps will be incorporated into the source soon so that no modifications are needed
 
 
 ### A Note from Dominic
