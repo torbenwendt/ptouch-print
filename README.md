@@ -19,7 +19,7 @@ work with the `PT-1230PC` (untested so far). Maybe others work too (please repor
 - PT-2430PC
 - PT-2730
 - PT-2730
-- PT-P700 ( could work but needs a little development first )
+- PT-P700 ( could work but needs a little development first - [see here](https://github.com/clarkewd/ptouch-print/issues/2) )
 - PT-D450
 
 **Further info can be found at:**
