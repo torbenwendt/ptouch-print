@@ -1,4 +1,4 @@
-**Notice:** This repo is a clone of the one on [Dominic Radermacher's website](https://mockmoon-cybernetics.ch/computer/p-touch2430pc/), and he is he author.
+**Notice:** This repo is a clone of the one on [Dominic Radermacher's website](https://mockmoon-cybernetics.ch/computer/p-touch2430pc/), and he is he author. It is available here, with his permission, to help increase visibility of the project and to encourage collaboration and further development.
 
 
 # ptouch
@@ -42,11 +42,9 @@ https://mockmoon-cybernetics.ch/computer/p-touch2430pc/
 
 ### A Note from Dominic's website
 
-Dear visitor, currently I have absolutely no time for improvements on this
-project (my free time currently is about one or two hours PER MONTH).
-Therefore, I can not look at suggestions about improvements.
+"Dear visitor, currently I have absolutely no time for improvements on this project (my free time currently is about one or two hours PER MONTH)..."
 
-### Alternative Collaboration
+### Collaboration
 
-You may still, of course, contact Dominic directly if you'd like. But I think GitHub is easier for collaboration, and he has given me permission to host a clone of his repo here, passing code contributions back to him
+You may still, of course, contact Dominic directly if you'd like. But I think GitHub is easier for collaboration, and he has given me permission to host a clone of his repo here, passing code contributions back to him.
 
