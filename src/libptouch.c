@@ -45,12 +45,21 @@ struct _pt_tape_info tape_info[]= {
 
 struct _pt_dev_info ptdevs[] = {
 	{0x04f9, 0x2007, "PT-2420PC", 128, FLAG_RASTER_PACKBITS},	/* 180dpi, 128px, maximum tape width 24mm, must send TIFF compressed pixel data */
-	{0x04f9, 0x202c, "PT-1230PC", 76, FLAG_NONE},		/* 180dpi, supports tapes up to 12mm - I don't know how much pixels it can print! */
+	{0x04f9, 0x202c, "PT-1230PC", 128, FLAG_NONE},		/* 180dpi, supports tapes up to 12mm - I don't know how much pixels it can print! */
+	/* Notes about the PT-1230PC: While it is true that this printer supports
+	   max 12mm tapes, it apparently expects > 76px data - the first 32px
+	   must be blank. */
 	{0x04f9, 0x202d, "PT-2430PC", 128, FLAG_NONE},		/* 180dpi, maximum 128px */
+	{0x04f9, 0x2030, "PT-1230PC (PLite Mode)", 128, FLAG_PLITE},
+	{0x04f9, 0x2031, "PT-2430PC (PLite Mode)", 128, FLAG_PLITE},
 	{0x04f9, 0x2041, "PT-2730", 128, FLAG_NONE},		/* 180dpi, maximum 128px, max tape width 24mm - reported to work with some quirks */
 	/* Notes about the PT-2730: was reported to need 48px whitespace
 	   within png-images before content is actually printed - can not check this */
-	{0x04f9, 0x2061, "PT-P700", 120, FLAG_UNSUP_RASTER},	/* DOES NOT WORK */
+	{0x04f9, 0x205f, "PT-E500", 128, FLAG_RASTER_PACKBITS},
+	/* Note about the PT-E500: was reported by Jesse Becker with the
+	   remark that it also needs some padding (white pixels) */
+	{0x04f9, 0x2061, "PT-P700", 128, FLAG_RASTER_PACKBITS|FLAG_P700_INIT},
+	{0x04f9, 0x2064, "PT-P700 (PLite Mode)", 128, FLAG_PLITE},
 	{0x04f9, 0x2073, "PT-D450", 128, FLAG_RASTER_PACKBITS},
 	/* Notes about the PT-D450: I'm unsure if print width really is 128px */
 	{0,0,"",0,0}
@@ -99,6 +108,16 @@ int ptouch_open(ptouch_dev *ptdev)
 					ptdevs[k].name,
 					libusb_get_bus_number(dev),
 					libusb_get_device_address(dev));
+				if (ptdevs[k].flags & FLAG_PLITE) {
+					printf("Printer is in P-Lite Mode, which is unsupported\n\n");
+					printf("Turn off P-Lite mode by changing switch from position EL to position E\n");
+					printf("or by pressing the PLite button for ~ 2 seconds (or consult the manual)\n");
+					return -1;
+				}
+				if (ptdevs[k].flags & FLAG_UNSUP_RASTER) {
+					printf("Unfortunately, that printer currently is unsupported (it has a different raster data transfer)\n");
+					return -1;
+				}
 				if ((r=libusb_open(dev, &handle)) != 0) {
 					fprintf(stderr, _("libusb_open error :%s\n"), libusb_error_name(r));
 					return -1;
@@ -164,7 +183,13 @@ int ptouch_enable_packbits(ptouch_dev ptdev)
 
 int ptouch_rasterstart(ptouch_dev ptdev)
 {
-	char cmd[] = "\x1b\x69\x52\x01";	/* 1B 69 52 01 = Select graphics transfer mode = Raster */
+	/* 1B 69 52 01 = Select graphics transfer mode = Raster */
+	char cmd[] = "\x1b\x69\x52\x01";
+	/* 1B 69 61 01 = switch mode (0=esc/p, 1=raster mode) */
+	char cmd2[] = "\x1b\x69\x61\x01";
+	if (ptdev->devinfo->flags & FLAG_P700_INIT) {
+		return ptouch_send(ptdev, (uint8_t *)cmd2, strlen(cmd2));
+	} /* else */
 	return ptouch_send(ptdev, (uint8_t *)cmd, strlen(cmd));
 }
 
