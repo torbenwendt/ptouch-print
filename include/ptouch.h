@@ -22,7 +22,7 @@
 
 struct _pt_tape_info {
 	uint8_t mm;		/* Tape width in mm */
-	uint8_t px;		/* Printing area in px */
+	uint16_t px;		/* Printing area in px */
 	double margins;		/* default tape margins in mm */
 };
 
@@ -86,7 +86,7 @@ int ptouch_init(ptouch_dev ptdev);
 int ptouch_lf(ptouch_dev ptdev);
 int ptouch_ff(ptouch_dev ptdev);
 size_t ptouch_get_max_pixel_width(ptouch_dev ptdev);
-int ptouch_get_tape_pixel_width(ptouch_dev ptdev);
+size_t ptouch_get_tape_width(ptouch_dev ptdev);
 int ptouch_page_flags(ptouch_dev ptdev, uint8_t page_flags);
 int ptouch_eject(ptouch_dev ptdev);
 int ptouch_getstatus(ptouch_dev ptdev);

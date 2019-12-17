@@ -288,9 +288,14 @@ int ptouch_getstatus(ptouch_dev ptdev)
 	return -1;
 }
 
-int ptouch_getmaxwidth(ptouch_dev ptdev)
+size_t ptouch_get_tape_width(ptouch_dev ptdev)
 {
 	return ptdev->tape_width_px;
+}
+
+size_t ptouch_get_max_width(ptouch_dev ptdev)
+{
+	return ptdev->devinfo->max_px;
 }
 
 int ptouch_sendraster(ptouch_dev ptdev, uint8_t *data, size_t len)
