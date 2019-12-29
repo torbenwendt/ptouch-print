@@ -37,8 +37,8 @@ AC_CHECK_LIB([usb-1.0], [libusb_init])
 
 # Checks for header files.
 AC_CHECK_HEADERS([fcntl.h libintl.h stdint.h stdlib.h string.h])
-AC_CHECK_HEADERS([gd.h], [], [AC_MSG_ERROR([libgd headers missing - maybe you need to install package gd-dev or gd-devel?])])
-AC_CHECK_HEADERS([libusb-1.0/libusb.h], [], [AC_MSG_ERROR([libusb headers missing - maybe you need to install package libusb-dev or libusb-devel?])])
+AC_CHECK_HEADERS([gd.h], [], [AC_MSG_ERROR([libgd headers missing - maybe you need to install package libgd-dev, gd-dev or gd-devel?])])
+AC_CHECK_HEADERS([libusb-1.0/libusb.h], [], [AC_MSG_ERROR([libusb headers missing - maybe you need to install package libusb-dev, libusb-devel or libusb-1.0-0-dev?])])
 
 # Checks for typedefs, structures, and compiler characteristics.
 AC_TYPE_SSIZE_T
