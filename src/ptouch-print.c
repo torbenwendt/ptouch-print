@@ -1,17 +1,17 @@
 /*
 	ptouch-print - Print labels with images or text on a Brother P-Touch
-	
+
 	Copyright (C) 2015-2019 Dominic Radermacher <blip@mockmoon-cybernetics.ch>
 
 	This program is free software; you can redistribute it and/or modify it
 	under the terms of the GNU General Public License version 3 as
 	published by the Free Software Foundation
-	
+
 	This program is distributed in the hope that it will be useful, but
 	WITHOUT ANY WARRANTY; without even the implied warranty of
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 	See the GNU General Public License for more details.
-	
+
 	You should have received a copy of the GNU General Public License
 	along with this program; if not, write to the Free Software Foundation,
 	Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
@@ -34,7 +34,7 @@
 #define MAX_LINES 4	/* maybe this should depend on tape size */
 
 gdImage *image_load(const char *file);
-void rasterline_setpixel(uint8_t rasterline[16], int pixel);
+void rasterline_setpixel(uint8_t* rasterline, size_t size, int pixel);
 int get_baselineoffset(char *text, char *font, int fsz);
 int find_fontsize(int want_px, char *font, char *text);
 int needed_width(char *text, char *font, int fsz);
@@ -58,25 +58,27 @@ bool debug=false;
 /* --------------------------------------------------------------------
    -------------------------------------------------------------------- */
 
-void rasterline_setpixel(uint8_t rasterline[16], int pixel)
+void rasterline_setpixel(uint8_t* rasterline, size_t size, int pixel)
 {
-	if (pixel > 128) {
+//	TODO: pixel should be unsigned, since we can't have negative
+//	if (pixel > ptdev->devinfo->device_max_px) {
+	if (pixel > (int)(size*8)) {
 		return;
 	}
-	rasterline[15-(pixel/8)] |= (uint8_t)(1<<(pixel%8));
+	rasterline[(size-1)-(pixel/8)] |= (uint8_t)(1<<(pixel%8));
 	return;
 }
 
 int print_img(ptouch_dev ptdev, gdImage *im)
 {
 	int d,i,k,offset,tape_width;
-	uint8_t rasterline[16];
+	uint8_t rasterline[(ptdev->devinfo->max_px)/8];
 
 	if (!im) {
 		printf(_("nothing to print\n"));
 		return -1;
 	}
-	tape_width=ptouch_getmaxwidth(ptdev);
+	tape_width=ptouch_get_tape_width(ptdev);
 	/* find out whether color 0 or color 1 is darker */
 	d=(gdImageRed(im,1)+gdImageGreen(im,1)+gdImageBlue(im,1) < gdImageRed(im,0)+gdImageGreen(im,0)+gdImageBlue(im,0))?1:0;
 	if (gdImageSY(im) > tape_width) {
@@ -99,7 +101,7 @@ int print_img(ptouch_dev ptdev, gdImage *im)
 		memset(rasterline, 0, sizeof(rasterline));
 		for (i=0; i<gdImageSY(im); i+=1) {
 			if (gdImageGetPixel(im, k, gdImageSY(im)-1-i) == d) {
-				rasterline_setpixel(rasterline, offset+i);
+				rasterline_setpixel(rasterline, sizeof(rasterline), offset+i);
 			}
 		}
 		if (ptouch_sendraster(ptdev, rasterline, 16) != 0) {
@@ -459,7 +461,7 @@ int main(int argc, char *argv[])
 		printf(_("ptouch_getstatus() failed\n"));
 		return 1;
 	}
-	tape_width=ptouch_getmaxwidth(ptdev);
+	tape_width=ptouch_get_tape_width(ptdev);
 	for (i=1; i<argc; i++) {
 		if (*argv[i] != '-') {
 			break;
@@ -491,7 +493,10 @@ int main(int argc, char *argv[])
 			printf("error = %04x\n", ptdev->status->error);
 			exit(0);
 		} else if (strcmp(&argv[i][1], "-image") == 0) {
-			im=image_load(argv[++i]);
+			if ((im=image_load(argv[++i])) == NULL) {
+				printf(_("failed to load image file\n"));
+				return 1;
+			}
 			out=img_append(out, im);
 			gdImageDestroy(im);
 			im = NULL;
